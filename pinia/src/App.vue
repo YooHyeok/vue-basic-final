@@ -9,11 +9,11 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="Pinia Example!" />
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/pinia">Pinia</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/drilling">Drilling</RouterLink>
       </nav>
     </div>
   </header>
