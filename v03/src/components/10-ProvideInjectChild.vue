@@ -1,5 +1,4 @@
 <script setup>
-import { } from 'vue';
 import GrandSon from '@/components/10-ProvideInjectChildChild.vue'
 
 </script>
