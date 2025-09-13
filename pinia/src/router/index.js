@@ -27,7 +27,12 @@ const router = createRouter({
       path: '/drilling',
       name: 'drilling',
       component: () => import('../views/prop-drilling/Top.vue')
-    }
+    },
+    {
+      path: '/drilling-pinia',
+      name: 'drilling-pinia',
+      component: () => import('../views/prop-drilling-pinia/Top.vue')
+    },
   ]
 })
 
