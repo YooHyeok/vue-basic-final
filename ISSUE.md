@@ -77,3 +77,37 @@ npm create vue@3.10.4 .
 
 </details>
 <br>
+
+## tailwindcss3이상 npx tailwindcss init -p 오류
+```bash
+npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+```
+위 명령을 통해 설치할 경우 25년 09워 14일 기준으로 tailwindcss 버전 4.1.13d이 설치된다.
+
+이후 tailwindcss 설정파일 구성을 위해 아래 명령을 입력했다.
+```bash
+npx tailwindcss init -p
+```
+위 명령을 실행할 경우 아래 오류가 발생한다.
+```text/plain
+npm ERR! could not determine executable to run
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     C:\Users\yjou7\AppData\Local\npm-cache\_logs\2025-09-14T08_17_34_116Z-debug-0.log
+```
+tailwindcss가 4버전으로 버전업 되면서 더이상 해당 설정을 사용하지 않기 때문에 발생한다.  
+
+1. 최신 4버전에 대한 설정 적용
+2. 3버전 다운그레이드 후 설정파일 적용
+
+2번째 방법을 적용하기 위해 tailwindcss버전을 3으로 변경했다.
+
+```bash
+npm install -D tailwindcss@3
+```
+
+```bash
+npx tailwindcss init -p
+```
+
+잘 설치되는 것을 확인할 수 있다.
