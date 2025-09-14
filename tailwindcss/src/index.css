@@ -1,0 +1,4 @@
+/* TailwindCSS 기본 스타일 초기화 (@tailwind base, components, utilities) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
