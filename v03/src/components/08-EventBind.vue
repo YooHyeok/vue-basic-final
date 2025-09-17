@@ -6,6 +6,7 @@ const value2 = ref('')
 
 const changeValue1 = (e) => {
   console.log(e.target.value)
+  value1.value = e.target.value
 }
 const changeValue2 = (e, value) => {
   console.log(e.target.value)
@@ -30,7 +31,8 @@ const changeValue2 = (e, value) => {
     예제: changeValue2($event, $event.target.value)
   -->
   <input type="text" @input="changeValue1" :value="value1"><br/>
-  <input type="text" @input="(e)=> value1 = e.target.value" :value="value1">
+  <!-- <input type="text" @input="(e)=> value1 = e.target.value" :value="value1"> -->
+  <input type="text" @input="(e)=> console.log(e.target.value)" :value="value1">
   <h4></h4>
   <input type="text" @input="changeValue2($event, $event.target.value)" :value="value2">
 </template>
