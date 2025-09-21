@@ -741,6 +741,134 @@ const keyModel2 = defineModel('keyModel2')
 <summary>접기/펼치기</summary>
 <br>
 
+### 기본 설정
+#### router 모듈 스케폴딩
+- router/index.js
+  ```js
+  import { createRouter, createWebHistory } from "vue-router";
+  import HomeView from "@/components/HomeView.vue";
+
+  const routes = [
+    {
+      path: '/',
+      component: HomeView
+    },
+  ]
+
+  const router = createRouter({
+    history: createWebHistory('/'),
+    routes
+  })
+
+  export default router;
+  ```
+  routes 배열에 route객체를 등록해준다. 객체 형태는 아래와 같다.
+
+#### router vue entrypoint에 등록
+- main.js
+  ```js
+  import { createApp } from 'vue'
+  import App from './App.vue'
+  import router from '@/router'
+
+  createApp(App).use(router).mount('#app')
+  ```
+
+#### route 객체 등록
+routes 배열에 route객체를 등록해준다. 객체 형태는 아래와 같다.
+```js
+{
+  path: '/',
+  component: HomeView
+},
+```
+
+path에는 이동할 경로를, component에는 실제 컴포넌트를 import 하여 등록해준다.
+- HomeView.vue
+  ```vue
+  <template>
+    <p>Home View</p>
+  </template>
+  ```
+
+해당 객체를 routes 배열에 등록해줘야한다.
+- router/index.js
+  ```js
+  import { createRouter, createWebHistory } from "vue-router";
+  import HomeView from "@/components/HomeView.vue";
+
+  const routes = [
+    {
+      path: '/',
+      component: HomeView
+    },
+  ]
+
+  const router = createRouter({
+    history: createWebHistory('/'),
+    routes
+  })
+
+  export default router;
+  ```
+
+#### RouterView
+요청으로 들어온 라우트에 대해 일치하는 컴포넌트를 렌더링 하는 함수형 컴포넌트이다.  
+컴포넌트를 route에 등록한 후에는 route 객체의 path에 할당한 주소를 실제 브라우저 주소창에 입력하게 되면 해당 컴포넌트를 RouterView 위치에 렌더링해준다.  
+따라서 아래 코드와같이 `router-view` 태그를 컴포넌트에 삽입한다
+```vue
+<template>
+  <router-view></router-view>
+</template>
+```
+추가로 router-view 내에서 렌더링 된 컴포넌트 내부에도 router-view를 포함할 수 있으며, 이는 중첩 라우트로 렌더링 할 수 있게 된다.
+
+- HomeView.vue
+  ```vue
+  <template>
+    <p>Home View</p>
+    <router-view></router-view>
+  </template>
+  ```
+  '/' path에 의해 router-view에 렌더링 된 Home 컴포넌트에 router-view가 중첩으로 존재할 수 있다.
+  중첩 라우트의 경우, routes에 등록한 객체에서 child 속성으로 등록이 가능하며, 자세한 설명과 예제는 아래 기본 설명이 끝난 후 추가로 다룬다.
+
+
+#### RouterLink
+router-link는 vue-router 에서 지원하는 네비게이션 컴포넌트이다.  
+to 속성에 이동할 위치의 주소값을 지정한다.  
+```vue
+<template>
+  <router-link to="/home">Home</router-link>
+</template>
+```
+
+router-link는 실제로 anchor 태그로 렌더링 된다.  
+```js
+<a href='이동할 위치의 주소값'>Home</a>
+```
+
+achor 태그의 경우 window.location을 통한 페이지 전환이므로 브라우저 자체적으로 로딩이 발생한다.
+router-link의 경우 vue-router를 통해 router-view 영역에 컴포넌트만 동적으로 교체되어 출력하므로 브라우저 자체 로딩은 발생되지 않는다.
+
+`active-class` 속성을 적용할 경우 일치하는 주소에 해당하는 링크가 활성화 되어 있을 때 css가 적용된다.
+```vue
+<template>
+  <router-link to="/home" active-class="on">Home</router-link>
+</template>
+<style scoped>
+.on {
+  font-weight: bold;
+  color: blue;
+}
+</style>
+```
+역시 anchor 태그로 렌더링되며, on이라는 class명이 지정된다.
+```js
+<a href='이동할 위치의 주소값' class="on">Home</a>
+```
+
+
 </details>
 <br>
 
