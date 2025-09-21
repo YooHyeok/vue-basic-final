@@ -1085,6 +1085,75 @@ const routes = [
 `/company` 경로로 요청이 들어올 경우 CompanyView.vue 컴포넌트가 App.vue컴포넌트에 렌더링되고 `/company/~` 경로로 들어올 경우
 children에 등록된 path와 매핑되는 컴포넌트를 렌더링한다.
 
+
+### named view
+여러 view를 동시에 표시해야할 때 사용한다.    
+예를들어 header, body, footer와 같이 레이아웃을 구성할때, 사용할 수 있다.
+
+- router/index.js
+  ```js
+  const routes = [
+    {
+      path: '/',
+      components: {        
+        header: HeaderView,
+        footer: FooterView,
+        default: BodyView        // 부모 default
+      },
+      children: [
+        { path: '', component: DefaultView }, // children default
+        { path: 'about', component: AboutPage }
+      ]
+    }
+  ]
+  ```
+  라우터에는 component가 아닌 components 속성에 name속성으로 매핑할 고유한 이름과, 컴포넌트를 할당한다.
+
+- App.vue
+  ```vue
+  <template>
+    <router-view name="header"></router-view>  <!-- HeaderView -->
+    <router-view></router-view>               <!-- 부모 default: BodyView -->
+    <router-view name="footer"></router-view> <!-- FooterView -->
+  </template>
+  ```
+  router-view의 name속성에 라우터 모듈의 named views 설정(components)에 등록한 이름을 각각 부여해준다.  
+  name을 지정하지 않을 경우 default가 매핑된다.
+
+- BodyView.vue
+  ```vue
+  <template>
+    <div>
+      <!-- 부모 default 영역 -->
+      <router-view></router-view> <!-- children이 이 안에 렌더링됨 -->
+    </div>
+  </template>
+  ```
+  children에 해당하는컴포넌트가 렌더링된다.  
+
+
+위 예시는 중첩라우트 구조와 named view 를 활용한 레이아웃 구현이므로 기본 개념으로 이해하기는 어려울 수 있다.  
+조금 더 쉬운 사례로는, 단순히 아래와 같이 하나의 컴포넌트 내에 여러개의 router-view를 구성할 경우이다.
+```js
+const routes = [
+  {
+    path: '/dashboard',
+    components: {
+      header: DashboardHeader,
+      default: DashboardMain,
+      footer: DashboardFooter
+    }
+  }
+]
+```
+```vue
+<template>
+  <router-view name="header"></router-view>
+  <router-view></router-view>      <!-- default -->
+  <router-view name="footer"></router-view>
+<template/>
+```
+
 </details>
 <br>
 
