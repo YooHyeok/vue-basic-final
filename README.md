@@ -628,10 +628,6 @@ const emit = defineEmits(['changeSubject1', 'changeSubject2'])
 .value 속성을 통해 값에 접근하여 수정할 수 있으며 부모의 값에 반영이 된다.  
 부모의 ref 변수를 직접 참조하는것은 아니며, 내부적으로 props로 전달받은 후 emit을 호출하는 원리로 작동된다.  
 
-
-
-
-
 ```vue
 <script setup>
 import { ref } from 'vue';
@@ -736,7 +732,7 @@ const keyModel2 = defineModel('keyModel2')
 </details>
 <br>
 
-## `Router와 중첩, 동적 라우팅`
+## `Router와 동적, 중첩 라우팅`
 <details>
 <summary>접기/펼치기</summary>
 <br>
@@ -1013,6 +1009,81 @@ const routes = [
   },
 ]
 ```
+
+### 중첩 라우팅
+Rotuer에 의해 router-view 졍역에 렌더링 된 컴포넌트 내부에 중첩으로 rotuer-view를 정의하여 중첩으로 라우팅을 할 수 있다.  
+Router 모듈에 등록한 rotue객체의 children 속성에 컴포넌트를 추가로 적용하면 된다.
+```js
+const routes = [
+  {
+    path: '/home',
+    name: 'HomePage',
+    component: HomeView
+  },
+  /* 중첩 라우팅 시작 */
+  {
+    path: '/company', /* route.params.pathMatch: 모든 경로/404 Not found 라우트 */
+    name: 'CompanyPage',
+    component: () => import('@/components/company/CompanyView'),
+    children: [
+      {
+        path: 'intro',
+        name: 'company-intro',
+        components: {
+          header: () => import('@/components/company/HeaderView.vue'),
+          default: () => import('@/components/company/IntroView.vue'),
+          footer: () => import('@/components/company/FooterView.vue'),
+        }
+      },
+      {
+        path: 'map',
+        name: 'company-map',
+        components: {
+          header: () => import('@/components/company/HeaderView.vue'),
+          default: () => import('@/components/company/MapView.vue'),
+          footer: () => import('@/components/company/FooterView.vue'),
+        }
+      },
+      {
+        path: 'history',
+        name: 'company-history',
+        components: {
+          header: () => import('@/components/company/HeaderView.vue'),
+          default: () => import('@/components/company/HistoryView.vue'),
+          footer: () => import('@/components/company/FooterView.vue'),
+        }
+      },
+    ]
+  },
+]
+```
+주의할 점은 children 배열내 객체에는 path 속성에 기입되는 값이 상대경로 즉, prefix로 `/` 를 붙히면 안된다는 점이다.
+
+- App.vue
+  ```vue
+  <template>
+      <router-link to="/home" active-class="on">Home</router-link> 
+      <router-link to="/company" active-class="on">Company</router-link> <!-- 중첩 라우팅 -->
+      <router-view></router-view> <!-- CompanyView 컴포넌트가 렌더링됨. -->
+  </template>
+  ```
+
+
+- CompanyView.vue
+  ```vue
+  <template>
+    <h1>Company</h1>
+    <p>
+      <router-link :to="{ name: 'company-intro'}" active-class="on">회사 소개</router-link> |
+      <router-link :to="{ name: 'company-map'}" active-class="on">오시는 길</router-link> |
+      <router-link :to="{ name: 'company-history'}" active-class="on">회사 연혁</router-link>
+    </p>
+    
+    <router-view></router-view> <!-- children에 등록된 컴포넌트가 렌더링됨 -->
+  </template>
+  ```
+`/company` 경로로 요청이 들어올 경우 CompanyView.vue 컴포넌트가 App.vue컴포넌트에 렌더링되고 `/company/~` 경로로 들어올 경우
+children에 등록된 path와 매핑되는 컴포넌트를 렌더링한다.
 
 </details>
 <br>
