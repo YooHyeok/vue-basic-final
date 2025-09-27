@@ -1182,6 +1182,22 @@ const routes = [
 ]
 ```
 
+### redirect
+네비게이션 사이드바에서 첫번째 메뉴를 선택했을 때와 동일한 컴포넌트를 페이지 첫 진입시(/ 경로)에도 보여주고 싶을때 alias를 사용하면 좋다고 설명했는데, 해당 기능은 redirect를 사용해서도 비슷하게 구현이 가능하다.  
+```js
+const routes = [
+  {
+    path: '/home',
+    component: HomeView
+  },
+  {
+    path: '/',
+    redirect: '/home'
+  }
+]
+```
+alias와의 차이점은 주소창에 path가 redirect에 할당한 path로 변경되므로 실제 입력한 path가 유지되지는 않는다는 점이다.
+
 </details>
 <br>
 
