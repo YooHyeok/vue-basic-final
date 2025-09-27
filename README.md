@@ -1198,6 +1198,61 @@ const routes = [
 ```
 alias와의 차이점은 주소창에 path가 redirect에 할당한 path로 변경되므로 실제 입력한 path가 유지되지는 않는다는 점이다.
 
+### Navigation Guard
+
+매개변수로 to, from, next를 받는다.  
+- `to`: 이동하려는 라우트 정보 객체
+- `from`: 현재 라우트 정보 객체
+- `next`: 라우트 이동을 진행하는 콜백 함수로 조건에 따라 허용/차단이 가능
+
+#### 전역 가드 - beforeEach
+라우터 인스턴스 전체에서 적용 가능하며, 라우트 이동이 시작될 때 항상 호출된다.  
+앱 내 모든 라우트 이동을 감지할 수 있으며, 인증 체크, 권한 확인, 로그 기록 등 공통처리에 적합하다.
+```js
+const router = createRouter({
+  history: createWebHistory('/'),
+  routes
+})
+router.beforeEach((to, from, next) => {
+  console.log("[G]beforeEach-to: ", to)
+  console.log("[G]beforeEach-from: ", from)
+  if (to.fullPath !== '/company') next();
+})
+```
+#### 라우트 내 가드 beforeEnter
+특정 라우트 설정 안에서만 정의 가능하며, 해당 라우트로 이동할 때만 호출된다.  
+컴포넌트와 독립적으로 동작되며, 라우트 설저 시점에서 정의된다.
+```js
+const routes = [
+  {
+    path: '/about',
+    name: 'AboutPage', /* /about/:id일 경우 push('/about/pk') 혹은 push({name:'AboutPage', params{id: 'pk'}}) 형태로 호출 */
+    component: AboutView,
+    beforeEnter: (to, from, next) => {
+      console.log("[R]beforeEnter-to: ", to)
+      console.log("[R]beforeEnter-from: ", from)
+      next();
+    }
+  },
+]
+```
+
+#### 컴포넌트 내 가드 - onBeforeRouteLeave
+컴포넌트 내부에서 정의되며, 현재 컴포넌트를 떠나 다른 라우트로 이동할 때 호출된다.  
+컴포넌트 상태를 기반으로 이동을 막거나 확인할 수 있다.  
+예를들어 form 작성중일 때 "저장하지 않고 이동하시겠습니까?" 라는 alert을 출력할때 사용할 수 있다.
+```vue
+<script setup>
+import { onBeforeRouteLeave } from 'vue-router';
+
+onBeforeRouteLeave((to, from, next) => {
+  console.log("[C]onBeforeRouteLeave - to: ", to)
+  console.log("[C]onBeforeRouteLeave - from: ", from)
+  if (to.fullPath !== '/about') next();
+})
+</script>
+```
+
 </details>
 <br>
 
