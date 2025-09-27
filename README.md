@@ -1151,7 +1151,35 @@ const routes = [
   <router-view name="header"></router-view>
   <router-view></router-view>      <!-- default -->
   <router-view name="footer"></router-view>
-<template/>
+</template>
+```
+
+### alias와 기본 path
+라우터에서 하나의 컴포넌트를 여러 URL 경로로 접근할 수 있게 해주는 기능이 alias이다.  
+예를들어, 네비게이션 사이드바의 router-link에 /home이라는 경로를 지정했지만, 브라우저에서 / 경로로 접속했을 때도 동일한 컴포넌트를 보여주고 싶을 수 있다.  
+이때 / 경로를 /home 의 alias(별칭)으로 등록하면, 실제 내부적으로는 /home으로 라우팅되지만 사용자 브라우저 주소창에는 /경로로 접근한것 처럼 동작한다.  
+
+```js
+const routes = [
+  {
+    path: '/home', // 혹은 '/'
+    component: HomeView,
+    alias: '/' // 혹은 '/home'
+  }
+]
+```
+네비게이션 사이드바에서 첫번째 메뉴를 선택했을 때와 동일한 컴포넌트를 페이지 첫 진입시(/ 경로)에도 보여주고 싶을때 사용하면 좋다.
+
+문자열 배열을 사용하면 여러개의 alias를 등록할 수도 있다.
+
+```js
+const routes = [
+  {
+    path: '/home',
+    component: HomeView,
+    alias: ['/', 'index', '/main']
+  }
+]
 ```
 
 </details>
