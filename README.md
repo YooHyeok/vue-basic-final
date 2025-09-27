@@ -1253,6 +1253,31 @@ onBeforeRouteLeave((to, from, next) => {
 </script>
 ```
 
+### 모든 경로/404 Not found 라우트 잡기
+
+#### `/:pathMatch(.*)*`
+정규 패턴을 사용하여 모든 경로에 대해 해당 라우트에 매칭하고 
+만약 등록되지 않은 라우트라면 등록된 컴포넌트를 출력한다.
+```js
+const routes = [
+  {
+    path: '/:pathMatch(.*)*', /* route.params.pathMatch: 모든 경로/404 Not found 라우트 */
+    name: 'NotFoundPage',
+    component: NotFoundView
+  },
+]
+```
+추가로 등록되지 않은 라우트 route.params.pathMatch 속성에 해당 경로를 저장한다.  
+route.params.pathMatch는 아래와같이 컴포넌트에서 활용 가능하다.
+- NotFoundView.vue
+```vue
+<template>
+  <div>
+    <h1>404 Not Found</h1>
+    <p>잘못된 경로: {{ $route.params.pathMatch }}</p>
+  </div>
+</template>
+```
 </details>
 <br>
 
