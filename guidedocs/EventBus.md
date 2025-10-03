@@ -1,4 +1,4 @@
-# [README.md](README.md)
+# [README.md](../README.md)
 
 # EventBus
 Vue2에서만 사용할수 있는 기능으로 Vue3에서는 지원하지 않는다.  

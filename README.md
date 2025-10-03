@@ -164,7 +164,7 @@ html 태그로 구성되는 `<template></template>` 영역과 Vue의 문법 기�
 # 주요 개념 정리
 
 ## [Slot.md](Slot.md)
-## [Event바인드와 Event객체.md](<Event바인드와 Event객체.md>)
+## [Event바인드와 Event객체.md](<guidedocs/Event바인드와 Event객체.md>)
 ## [DefineModel과 update.md](<DefineModel과 update.md>)
 ## [Router와 동적, 중첩 라우팅](<Router와 동적, 중첩 라우팅.md>)
 ## [EventBus](EventBus.md)

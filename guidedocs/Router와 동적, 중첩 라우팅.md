@@ -1,4 +1,4 @@
-# [README.md](README.md)
+# [README.md](../README.md)
 
 # Router와 동적, 중첩 라우팅
 
