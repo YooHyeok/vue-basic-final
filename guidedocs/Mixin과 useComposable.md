@@ -18,7 +18,7 @@ export const dataPrint = {
       return message
     },
     count(number) {
-      if(!message) return
+      if(!number) return
       return number++
     }
   }
@@ -127,9 +127,106 @@ export default {
 1. Mixin - created  
 2. Component - created  
 
-즉, created() 라는 훅이 컴포넌트가 마운트-종료되기 전에 Mixin으로 먼저 정의(호출)되고
-이후 컴포넌트가 종료되면서 created()훅이 덮어 씌워지기는 원리이다.
-이 원리에 의해 컴포넌트와, Mixin 모듈에 정의한 methods훅의 함수명이 동일하다면, 
+즉, created() 라는 훅이 컴포넌트가 마운트-종료되기 전에 Mixin으로 먼저 정의(호출)되고  
+이후 컴포넌트가 종료되면서 created()훅이 덮어 씌워지기는 원리이다.  
+이 원리에 의해 컴포넌트와, Mixin 모듈에 정의한 methods훅의 함수명이 동일하다면,  
 먼저 Mixin의 methods 훅이 정의된 뒤 최종적으로는 컴포넌트의 methods로 덮어지기 때문에  
 실제 함수 호출은 컴포넌트에 소속된 methods 훅의 함수가 호출된다.
+</details>
+
+# useComposable(ComposableAPI)
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
+Vue3에서는 Mixin대신 Composable 함수를 사용한다.  
+Composable은 단순히 setup함수 안에서 불러와 사용할 수 있는 재사용 가능한 로직 모듈이다.  
+React의 CustomHook과 같은 철학을 가지며, 문법도 비슷하다.  
+
+앞서 Mixin에서 구현했던 공통적으로 쓰이는 string, count 함수를 Composable로 구현해본다.
+
+```js
+import { ref } from "vue"
+
+export const useDataPrint = () => {
+  const string = (message) => {
+    if (!message) return
+    return message
+  }
+
+  const count = (number) => {
+    if (!number) return
+    return number + 1
+  }
+
+  return { string, count }
+}
+```
+
+```vue
+<template>
+  <p>{{ string("메롱") }}</p> <!-- useDataPrint로부터 가져온 string -->
+  <p>{{ increase(3) }}</p>
+</template>
+
+<script setup>
+import { useDataPrint } from "@/composables/useDataPrint"
+
+const { string, count } = useDataPrint()
+
+const increase = () => {
+  return count(number) // useDataPrint로부터 가져온 count
+}
+</script>
+```
+
+## Composable에서 반응형 데이터 사용하기.
+
+Composable 내부에서 상태를 정의할 때는 ref 또는 reactive를 사용한다.  
+```js
+import { ref } from "vue"
+
+export const useRefMixin = () => {
+  const mixinRef = ref("나는 Composable이다!")
+  return { mixinRef }
+}
+```
+
+```vue
+<template>
+  <p>{{ mixinRef }}</p> <!-- useRefMixin으로부터 가져온 mixinRef -->
+</template>
+<script>
+import { useRefMixin } from "@/composable/useRefMixin"
+
+const { mixinRef } = useRefMixin()
+</script>
+```
+
+## Composable과 라이프사이클 훅
+Composable은 라이프사이클에 종속된다.
+즉, onMounted, onUnmounted, onCreated 등 라이프사이클 훅을 사용할 수 있다.  
+
+```js
+import { onMounted } from "vue"
+export const usePriority = () => {
+  onMounted(() => {
+    console.log("Composable - onMounted")
+  })
+  const func = () => "composable"
+  return { func }
+}
+```
+
+```vue
+<script setup>
+import { usePriority } from "@/comnposable/usePriority"
+
+const { func } = usePriority()
+function func() {
+  return "component"
+}
+<script>
+```
+
 </details>
