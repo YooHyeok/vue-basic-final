@@ -163,9 +163,10 @@ html 태그로 구성되는 `<template></template>` 영역과 Vue의 문법 기�
 
 # 주요 개념 정리
 
-## [Slot.md](Slot.md)
+## [Mixin.md](guidedocs/Mixin과useComposable.md)
+## [Slot.md](guidedocs/Slot.md)
 ## [Event바인드와 Event객체.md](<guidedocs/Event바인드와 Event객체.md>)
-## [DefineModel과 update.md](<DefineModel과 update.md>)
-## [Router와 동적, 중첩 라우팅](<Router와 동적, 중첩 라우팅.md>)
-## [EventBus](EventBus.md)
-## [Provide & Inject](Provide&Inject.md)
+## [DefineModel과 update.md](<guidedocs/DefineModel과 update.md>)
+## [Router와 동적, 중첩 라우팅](<guidedocs/Router와 동적, 중첩 라우팅.md>)
+## [EventBus](guidedocs/EventBus.md)
+## [Provide & Inject](guidedocs/Provide&Inject.md)
