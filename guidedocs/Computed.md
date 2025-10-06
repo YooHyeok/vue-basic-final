@@ -10,6 +10,10 @@
 고차함수를 사용하여 복잡한 계산 로직을 조합하거나, 여러 상태값을 가공한 새로운 데이터를 만들어낼 수 있다는 장점이 있다.
 
 ## 기본 예제1) methods와 computed 속성의 공통/차이점
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
 아래와 같이 methods 속성에 정의하는것과 동일한 함수 형태로 정의하지만, 데이터 취급을 하기 때문에 호출할때에는 변수처럼 접근한다.
 
 - vue2
@@ -59,9 +63,14 @@
     </div>
   </template>
   ```
+</details>
 
 
 ## 기본예제2) 캐싱 기능
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
 아래와 같이 methods와 computed에 각각 로그를 넣어 3회씩 출력해보면, method는 로그가 3회 출력되지만, computed는 1회 출력된다.  
 그러나 템플릿에는 동일한 값이 출력되는데, 이는 `캐싱` 처리가 되어 재계산 하지 않고 기억해 둔 값이 반환되었기 때문이다.  
 - vue2
@@ -136,8 +145,13 @@
   Computed 호출
   ```
 
+</details>
 
 ## 기본예제3) 재계산 - 종속된 반응형 데이터 변경
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
 종속된 즉, 반환되는 반응형 변수의 값이 변경될 경우 재계산되기 때문에, 아래와 같은 코드에서는 computed내 로그가 2번 출력된다.
 - vue2
   ```vue
@@ -201,8 +215,13 @@
   method 호출
   computed 호출
   ```
+</details>
 
 ## 기본예제4) 읽기 전용과 getter/setter
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
 computed는 기본적으로 읽기전용 이기 때문에 직접 접근하여 값을 수정할 수 없지만, 내부 기능에 의해 getter setter를 정의하여 수정할 수 있다.  
 computed의 기본 특성인 읽기전용은 내부적으로 getter함수만 가지도록 되어있기 때문에, setter함수와 함께 새롭게 오버라이딩 하여 정의할 경우 읽기, 쓰기 모두 가능하게 된다.  
 - vue2
@@ -284,7 +303,7 @@ computed의 기본 특성인 읽기전용은 내부적으로 getter함수만 가
   <h2> computed 호출: 유재혁</h2>
   ```
 
-### 재계산 되지 않은 이유와 nextTick
+### `재계산 되지 않은 이유와 nextTick`
 추가로 method에 의해 computed값이 변경되면 반응성을 가지므로 `종속된 값의 변화가 발생했을 때 재계산하여 캐싱한 후 데이터를 반환` 되는 원리에 의해   
 유혁이 출력된 후 리랜더링되어 유재혁으로 변경되어야 한다고 생각했지만 결과를 보면 그렇지 않다.  
 이는 vue의 반응성과 렌더링 순서에 의해 나타나는 현상이다.  
@@ -310,8 +329,13 @@ react에서의 useState의 setter함수와 같은 일종의 비동기 버그 현
 
 그리고 Vue에서는 위와같은 상황을 이를 임의로 처리해주는게 nextTick인것이다.
 nextTick에 의해 렌더링 사이클이 끝난 뒤 DOM이 최신상태가 되었을때 작업을 수행하기 때문에, method에서 호출되더라도 최초 렌더링이 종료된 후 호출되어 상태값을 변경하여 렌더링을 다시 한번 실행할 수 있게 된다.
+</details>
 
 ## 기본예제5) 파라미터 전달과 고차함수 반환
+<details>
+<summary>접기/펼치기</summary>
+<br>
+
 computed는 변수처럼 접근하지만, 매개변수를 전달할 수도 있다.  
 고차함수를 사용해야만 전달 가능하며 복잡한 계산 로직을 조합하거나, 여러 상태값을 가공한 새로운 데이터를 만들어낼 수 있다는 장점이 있다.  
 
@@ -372,3 +396,66 @@ computed는 변수처럼 접근하지만, 매개변수를 전달할 수도 있�
   ```
 
 단, 반드시 고차함수를 반환하여 고차함수를 통해 매개변수를 받아야만 한다.
+
+### `고차함수란?`
+함수를 인자로 받거나(콜백함수) 함수를 반환하는 함수(함수 컬링)를 고차함수라고 부른다.  
+자바스크립트에서 함수는 `일급 객체` 이므로 함수 내에서 함수 반환이 가능하다.
+
+```js
+function multiply(a) {
+  return function(b) {
+    return a * b
+  }
+}
+const double = multiply(2)
+console.log(double(5)) // 10
+```
+위 코드에서는 multiple에 2를 전달하고 함수를 반환받는다.  
+반환받은 함수를 double이라는 변수에 저장하게 되면, double이라는 이름으로 함수를 새롭게 호출할 수 있다.  
+
+단순하게 처음 호출하는 매개변수를 전달하지 않는다면 아래와 같이 구현해볼 수 있다.  
+```js
+function multiply() {
+  return function(b) {
+    return 10 * b
+  }
+}
+const double = multiply()
+console.log(double(5)) // 50
+```
+첫번째 함수를 호출하여 반환받은 함수를 다시 호출할때 매개변수를 전달하면서 호출한다.
+
+그렇다면 vue에서는 어떻게 고차함수를 통해 두번째 함수에 매개변수를 전달할 수 있을까?  
+우리는 `모양은 함수이지만 데이터 취급을 한다.` 이 문장에 집중할 필요가 있다.  
+  ```vue
+  <template>
+    <div>
+      <h2> computed 호출: {{ computedFullName }}</h2>
+        <h2> computed 호출: {{ computedFullName('재혁') }}</h2>
+    </div>
+  </template>
+  <script>
+  export default {
+    data() {
+      return {
+        firstName: '유',
+        lastName: '혁'
+      }
+    },
+    computed: {
+      computedFullName() {
+        return (name) => {
+          if (!name) return `${this.firstName}${this.lastName}`
+          return `${this.firstName}${name}`
+        }
+      }
+    }
+  }
+  </script>
+  ```
+
+위 코드를 보면 computedFullName을 template영역에서 변수로 취급하는데, 사실상 함수를 `computedFullName()`을 호출한것과 같다.  
+변수 뒤에 ()를 붙히는 순간 computedFullName이 반환하는 함수를 `('재혁')`의 형태로 호출한것이라고 보면 된다.  
+</details>
+
+
