@@ -310,3 +310,65 @@ react에서의 useState의 setter함수와 같은 일종의 비동기 버그 현
 
 그리고 Vue에서는 위와같은 상황을 이를 임의로 처리해주는게 nextTick인것이다.
 nextTick에 의해 렌더링 사이클이 끝난 뒤 DOM이 최신상태가 되었을때 작업을 수행하기 때문에, method에서 호출되더라도 최초 렌더링이 종료된 후 호출되어 상태값을 변경하여 렌더링을 다시 한번 실행할 수 있게 된다.
+
+## 기본예제5) 파라미터 전달과 고차함수 반환
+computed는 변수처럼 접근하지만, 매개변수를 전달할 수도 있다.  
+고차함수를 사용해야만 전달 가능하며 복잡한 계산 로직을 조합하거나, 여러 상태값을 가공한 새로운 데이터를 만들어낼 수 있다는 장점이 있다.  
+
+- vue2
+  ```vue
+  <template>
+    <div>
+        <h2> computed 호출: {{ computedFullName }}</h2>
+        <h2> computed 호출: {{ computedFullName('재혁') }}</h2>
+    </div>
+  </template>
+  <script>
+  export default {
+    data() {
+      return {
+        firstName: '유',
+        lastName: '혁'
+      }
+    },
+    computed: {
+      computedFullName() {
+        return (name) => {
+          if (!name) return `${this.firstName}${this.lastName}`
+          return `${this.firstName}${name}`
+        }
+      }
+    }
+  }
+  </script>
+  ```
+
+- vue3
+  ```vue
+  <script setup>
+  import { ref, computed } from 'vue'
+  const firstName = ref('유')
+  const lastName = ref('혁')
+  const computedFullName = computed(() => {
+    return (name) => {
+      if (!name) return `${this.firstName}${this.lastName}`
+      return `${this.firstName}${name}`
+    }
+  })
+
+  </script>
+  <template>
+    <div>
+        <h2> computed 호출: {{ computedFullName }}</h2>
+        <h2> computed 호출: {{ computedFullName('재혁') }}</h2>
+    </div>
+  </template>
+  ```
+
+- 결과
+  ```
+  유혁
+  유재혁
+  ```
+
+단, 반드시 고차함수를 반환하여 고차함수를 통해 매개변수를 받아야만 한다.
