@@ -163,7 +163,7 @@ html 태그로 구성되는 `<template></template>` 영역과 Vue의 문법 기�
 
 # 주요 개념 정리
 
-## [Mixin과 useComposable.md](guidedocs/Mixin과 useComposable.md)
+## [Mixin과 useComposable.md](<guidedocs/Mixin과 useComposable.md>)
 ## [Computed.md](guidedocs/Computed.md)
 ## [Slot.md](guidedocs/Slot.md)
 ## [Event바인드와 Event객체.md](<guidedocs/Event바인드와 Event객체.md>)
