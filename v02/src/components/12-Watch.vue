@@ -71,14 +71,6 @@ export default {
     <div class="divider"></div>
      <!-- 우측 영역 -->
     <div class="right">
-      <!--  -->
-      <h2>양방향 바인딩을 활용한 computed get/set</h2>
-      <p>[Full Name]: {{ fullName }}</p>
-      <input type="text" v-model="fullName" placeholder="Enter full name">
-      <p>[First Name]: {{ firstName }}</p>
-      
-      <br>
-
     </div>
   </div>
 </template>
